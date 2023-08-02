@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Generator</title>
+</head>
+
+<body>
+    <h1>Number Generator</h1>
+    <h2>30DaysofJS Day22</h2>
+    <hr />
+    <div style="width: 12rem;">
+        <p
+            style="background-color: #21BF73; padding: 5px; box-shadow: 2px 2px 2px grey; height: 2rem; font-size: 1.4rem;padding-left:1rem">
+            Çift sayılar</p>
+        <p
+            style="background-color: #FDDB3A; padding: 5px; box-shadow: 2px 2px 2px grey; height: 2rem; font-size: 1.4rem;padding-left:1rem">
+            Tek Sayılar</p>
+        <p
+            style="background-color: #FD5E53; padding: 5px; box-shadow: 2px 2px 2px grey; height: 2rem; font-size: 1.4rem;padding-left:1rem">
+            Asal Sayılar</p>
+    </div>
+    <div>
+        <input type="text" id="input">
+        <button id='buttonGenerate' onclick="numGenerate(inputElement.value)">SAYILARI GÖSTER</button>
+
+        <div class="animationContainer">
+
+            <input type="checkbox" name="isAnimated" id="isAnimated">
+            <label class="animationLabel" for="isAnimated">Animasyonlu göster</label>
+        </div>
+    </div>
+    <hr />
+    <h3 id="warningMsg" style="color: crimson; letter-spacing: .2rem;"></h3>
+    <div id="outherContainer">
+        <div id="container"></div>
+
+    </div>
+    <style>
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        input,
+        button {
+            line-height: 2rem;
+            font-size: 1.2rem;
+            padding-left: 1rem;
+            font-weight: 600;
+            display: inline;
+        }
+
+        #isAnimated {
+            height: 1rem;
+            width: 1rem;
+            margin-left: 2rem;
+        }
+
+        .animationLabel {
+            font-size: 1.2rem;
+        }
+
+        .animationContainer {
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ertele {
+            /* position: relative;
+            animation-name: ertele;
+            animation-duration: 2s;
+            opacity: 0;
+            animation-fill-mode: forwards; */
+        }
+
+        @keyframes ertele {
+            from {
+                opacity: 0;
+                left: -50px;
+            }
+
+            to {
+                opacity: 1;
+                left: 0px;
+            }
+        }
+
+        input:focus {
+            outline: none;
+            border: none;
+            box-shadow: 0 0 5px 3px rgb(253, 74, 244);
+        }
+    </style>
+    <script>
+        document.body.style.padding = '10px 35px'
+        document.body.style.backgroundColor = '#8fb8f7'
+        document.body.style.fontFamily = 'monospace'
+        document.querySelector('#buttonGenerate').style.fontFamily = 'monospace'
+
+        input.addEventListener('keydown', e => {
+            if (e.keyCode == 13) {
+                console.log(e.keyCode)
+                numGenerate(inputElement.value)
+            }
+        })
+
+        const inputElement = document.getElementById('input')
+        const outherContainer = document.getElementById('outherContainer')
+        outherContainer.style.margin = ('15px 10vw')
+
+        const containerElement = document.getElementById('container')
+        const warningMsg = document.getElementById('warningMsg')
+
+        const isAnimated = document.getElementById('isAnimated')
+
+
+        numGenerate = (scope) => {
+
+
+            if (+scope < 2) {
+                warningMsg.innerText = "Sayı 2'den küçük olamaz"
+                containerElement.innerHTML = ''
+            }
+            else if ((/[^0-9]/g.test(scope) || scope == '')) {
+                warningMsg.innerText = 'Lütfen geçerli bir sayı giriniz'
+                containerElement.innerHTML = ''
+            }
+            else {
+                try {
+                    containerElement.innerHTML = ''
+                    warningMsg.innerText = ''
+                    for (let i = 2; i < parseInt(scope) + 1; i++) {
+                        const newNumber = document.createElement('div')
+                        newNumber.textContent = i
+                        newNumber.style.display = 'inline-flex'
+                        newNumber.style.width = '85px'
+                        newNumber.style.height = '85px'
+                        newNumber.style.alignItems = 'center'
+                        newNumber.style.justifyContent = 'center'
+                        newNumber.style.fontSize = '32px'
+                        newNumber.style.backgroundColor = '#21BF73'
+
+                        if (isAnimated.checked == true) {
+                            console.log('isAnimated var')
+                            newNumber.classList.add('ertele')
+                            newNumber.style.position = 'relative'
+                            newNumber.style.animationName = 'ertele'
+                            newNumber.style.animationDuration = '150ms'
+                            newNumber.style.opacity = '0'
+                            newNumber.style.animationFillMode = 'forwards'
+                            newNumber.style.animationDelay = `${(i - 2) * 0.3}s`
+                        }
+
+                        let asalSayi = true
+                        for (let j = 2; j < i; j++) {
+                            if (i % j === 0 && j !== i) {
+                                // console.log("i=",i,"j=",j)
+                                asalSayi = false
+                                i % 2 == 0 ? newNumber.style.backgroundColor = '#21BF73' : newNumber.style.backgroundColor = '#FDDB3A'
+                            }
+                            if (asalSayi) {
+                                // console.log(i)
+                                newNumber.style.backgroundColor = '#FD5E53'
+                            }
+                        }
+                        containerElement.appendChild(newNumber)
+                    }
+                } catch (error) {
+                    warningMsg.innerHTML = `Sebebi belirlenemeyen bir hata oluştu. HATA:${error}`
+                }
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
